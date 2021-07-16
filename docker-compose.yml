@@ -1,44 +1,63 @@
-version: '3'
+version: '3.7'
+
 services:
+
   mysql:
-    image: mariadb:latest
+    restart: on-failure
+    image: mariadb:10.6.3
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: mediawiki
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    # volumes:
+    #   - mysql-data:/var/lib/mysql
 
   wiki:
-    image: ghcr.io/radiorabe/mediawiki:latest
+    restart: on-failure
     build: ./wiki
     ports:
       - "8081:80"
     environment:
-      MW_WG_SERVER: ~
-      MW_WG_DBUSER: root
-      MW_WG_DBPASS: secret
+      DB_SERVER: mysql:3306
+      MW_WG_SERVER: ${MW_WG_SERVER}
+      MW_WG_SITENAME: ${MW_WG_SITENAME}
+      MW_WG_METANAMESPACE: ${MW_WG_METANAMESPACE}
+      MW_WG_DBNAME: ${MYSQL_DATABASE}
+      MW_WG_DBUSER: ${MYSQL_USER}
+      MW_WG_DBPASS: ${MYSQL_PASSWORD}
       MW_WG_LANGUAGECODE: en
       MW_WG_RAWHTML: 'false'
-      MW_WG_SECRET: ~
+      MW_WG_SECRET: ${MW_WG_SECRET}
+      MW_AUTH_CREATEACCOUNT: 'false'
+      MW_AUTH_REMOTEUSER: 'true'
+      # Activate Maintenance mode
+      # MW_WG_READONLY: "Maintenance"
+      # Activate debug
+      MW_DEBUG: "true"
+      # Set the redirect_uri to use, needed for OpenID Connect until we get rid of the sed patch in wiki/Dockerfile
+      # MW_AUTH_OIDC_REDIRECT_URI: URL/to/Special:PluggableAuthLogin
     volumes:
       - ./images:/var/www/html/images
 
   parsoid:
-    image: benhutchins/parsoid:latest
+    restart: on-failure
+    build: ./parsoid
     volumes:
-      - "./parsoid/:/data/"
+      - "./parsoid/data:/data"
 
   backup:
-    image: schnitzler/mysqldump
+    image: schnitzler/mysqldump:3.9
     volumes:
-      # backup script to use
       - ./backup/backup.sh:/etc/periodic/daily/backup:ro
       # volume for backing up files
       - ./images:/images:ro
-      # mount backups
       - ./backup/:/backup
     command: ["-l", "8", "-d", "8"]
     environment:
       BACKUP_RETENTION: 14
       MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+volumes:
+  mysql-data:

@@ -18,6 +18,7 @@ if (getenv('MW_DEBUG')) {
     $wgShowExceptionDetails = true;
     $wgShowDBErrorBacktrace = true;
     $wgDebugToolbar = true;
+    $wgShowSQLErrors = true;
 }
 
 ## Uncomment this to disable output compression
@@ -62,7 +63,7 @@ $wgEmailAuthentication = true;
 ## Database settings
 $wgDBtype = "mysql";
 $wgDBserver = "mysql";
-$wgDBname = "mediawiki";
+$wgDBname = getenv('MW_WG_DBNAME');
 $wgDBuser = getenv('MW_WG_DBUSER');
 $wgDBpassword = getenv('MW_WG_DBPASS');
 

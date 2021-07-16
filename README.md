@@ -1,27 +1,19 @@
 # Semantic MediaWiki on Docker
 
-This repo contains an opinionated installation of MediaWiki. It has all the
-semantic wiki extensions installed and configured and is configured with
-visualeditor support (aka the works).
+This repo contains an opinionated installation of MediaWiki. It has all the semantic wiki extensions installed and configured and is configured with visualeditor support (aka the works).
 
 ## Installation
 
 ```bash
-docker-compose pull
+docker-compose build
 ```
 
 ## Configuration
 
-Configuration is done through environmaent variables. Most configurable aspects may be found in the docker-compose yaml files.
-
-The file `docker-compose.example.yml` describes some of the variables. You can copy it to `docker-composer.override.yml` as is to get started.
-
 ```bash
-cp docker-compose.example.yml docker-compose.override.yml
-$EDITOR docker-compose.override.yml
+cp .env.example .env
+# EDIT YOUR .env !!!
 ```
-
-I'll add a table here when I'm not lazy.
 
 ## Startup
 
@@ -29,17 +21,13 @@ I'll add a table here when I'm not lazy.
 docker-compose up -d
 ```
 
-## Database migration
+You need to run the migrations after the initial start of the containers so the tables needed by the semantic extensions are installed.
 
-You need to run the migrations after the initial start of the containers so
-the tables needed by the semantic extensions are installed.
-
-You can also choose to import old data (see below) and run the migration after
-that.
-
-```bash
-docker-compose exec wiki php maintenance/update.php --skip-external-dependencies --quick
-```
+> You can also choose to import old data (see below) and run the migration after that.
+> 
+> ```bash
+> docker-compose exec wiki php maintenance/update.php --skip-external-dependencies --quick
+> ```
 
 ## Backup database and images
 
@@ -85,5 +73,3 @@ If you had to wait a long time for the jobs to run you might want to run the upd
 ```bash
 docker-compose exec wiki php maintenance/update.php --skip-external-dependencies --quick
 ```
-
-

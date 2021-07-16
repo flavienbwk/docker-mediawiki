@@ -1,3 +1,8 @@
 mysql_backups/
 image_backups/
+images/*
+!images/.gitkeep
+parsoid/data/*
+!parsoid/data/config.yaml
 docker-compose.override.yml
+.env
