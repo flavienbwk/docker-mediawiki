@@ -1,4 +1,4 @@
-FROM mediawiki:1.36 AS build
+FROM mediawiki:1.36.1 AS build
 
 ENV MEDIAWIKI_EXT_BRANCH REL1_36
 
@@ -55,7 +55,7 @@ RUN git clone --depth=1 -b $MEDIAWIKI_EXT_BRANCH https://gerrit.wikimedia.org/r/
 
 RUN git clone --depth=1 -b $MEDIAWIKI_EXT_BRANCH https://gerrit.wikimedia.org/r/mediawiki/extensions/DrawioEditor.git /var/www/html/extensions/DrawioEditor
 
-FROM mediawiki:1.36
+FROM mediawiki:1.36.1
 
 RUN set -x; \
    apt-get update \
@@ -70,6 +70,7 @@ COPY --from=build /var/www/html /var/www/html
 COPY apache.conf /etc/apache2/conf-enabled/99-wiki.conf
 
 COPY LocalSettings.php /var/www/html/LocalSettings.php 
+COPY update.php /var/www/html/maintenance/update.php 
 
 COPY wiki-cmd.sh /usr/local/bin/wiki-cmd
 

@@ -6,7 +6,8 @@ if [ -f /usr/local/share/ca-certificates/ca.crt ]; then
 fi
 
 if [ ! -f ./extensions/SemanticMediaWiki/.smw.json ]; then
-    php maintenance/update.php --skip-external-dependencies --quick
+    php ./maintenance/update.php --quick --skip-external-dependencies
+    php ./extensions/SemanticMediaWiki/maintenance/setupStore.php
 fi
 
 exec apache2-foreground -DFOREGROUND "$@"

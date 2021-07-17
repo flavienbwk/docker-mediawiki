@@ -7,14 +7,14 @@
 # https://www.mediawiki.org/wiki/Manual:Configuration_settings
 
 # Protect against web entry
-if ( !defined( 'MEDIAWIKI' ) ) {
-	exit;
+if (!defined('MEDIAWIKI')) {
+    exit;
 }
 
 $wgReadOnly = getenv('MW_WG_READONLY') ?: false;
 ini_set('display_errors', false);
 
-if (getenv('MW_DEBUG')) {    
+if (getenv('MW_DEBUG')) {
     $wgShowExceptionDetails = true;
     $wgShowDBErrorBacktrace = true;
     $wgDebugToolbar = true;
@@ -74,7 +74,7 @@ $wgDBprefix = "";
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=utf8";
 
 # Experimental charset support for MySQL 5.0.
-$wgDBmysql5 = true;
+#$wgDBmysql5 = true;
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
@@ -142,10 +142,10 @@ $wgDefaultSkin = "vector";
 
 # Enabled skins.
 # The following skins were automatically enabled:
-wfLoadSkin( 'MonoBook' );
-wfLoadSkin( 'Vector' );
+wfLoadSkin('MonoBook');
+wfLoadSkin('Vector');
 # This one is available on demand, move along, there is nothing to see here
-getenv('MW_SKIN_MATERIAL_ENABLE') !== false && wfLoadSkin( 'Material' );
+getenv('MW_SKIN_MATERIAL_ENABLE') !== false && wfLoadSkin('Material');
 
 # Subpages
 if (getenv('MW_NS_WITH_SUBPAGES_MAIN')) {
@@ -158,17 +158,17 @@ if (getenv('MW_NS_WITH_SUBPAGES_TEMPLATE')) {
 # Enabled Extensions. Most extensions are enabled by including the base extension file here
 # but check specific extension documentation for more details
 # The following extensions were automatically enabled:
-wfLoadExtension( 'Interwiki' );
-wfLoadExtension( 'Renameuser' );
-wfLoadExtension( 'SyntaxHighlight_GeSHi' );
-wfLoadExtension( 'ParserFunctions' );
+wfLoadExtension('Interwiki');
+wfLoadExtension('Renameuser');
+wfLoadExtension('SyntaxHighlight_GeSHi');
+wfLoadExtension('ParserFunctions');
 if (getenv('MV_PARSERFUNCTIONS_ENABLE_STRING_FUNCTIONS')) {
     $wgPFEnableStringFunctions = true;
 }
-wfLoadExtension( 'ImageMap' );
+wfLoadExtension('ImageMap');
 
 # VisualEditor Extension
-wfLoadExtension( 'VisualEditor' );
+wfLoadExtension('VisualEditor');
 
 # Enable by default for everybody
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
@@ -180,30 +180,30 @@ $wgDefaultUserOptions['visualeditor-enable'] = 1;
 # #$wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
 
 $wgVirtualRestConfig['modules']['parsoid'] = array(
-  // URL to the Parsoid instance
-  'url' => getenv("MW_WG_PARSOID_URL") ?: 'http://parsoid:8000',
-  'domain' => 'wiki',
-  'prefix' => '',
-  'forwardCookies' => true,
+    // URL to the Parsoid instance
+    'url' => getenv("MW_WG_PARSOID_URL") ?: 'http://parsoid:8000',
+    'domain' => 'wiki',
+    'prefix' => '',
+    'forwardCookies' => true,
 );
 
 # TemplateData Extension
-wfLoadExtension( 'TemplateData' );
+wfLoadExtension('TemplateData');
 
 # CategoryTree Extension
-wfLoadExtension( 'CategoryTree' );
+wfLoadExtension('CategoryTree');
 $wgUseAjax = true;
 if (getenv('MW_CATEGORYTREE_SIDEBAR_ROOT')) {
     $wgCategoryTreeSidebarRoot = getenv('MW_CATEGORYTREE_SIDEBAR_ROOT');
 }
 
 # ExternalData
-wfLoadExtension( 'ExternalData' );
+wfLoadExtension('ExternalData');
 
 if (getenv('MW_EXTERNALDATA_DIRECTORY_PATH')) {
     $edgDirectoryPath = json_decode(getenv('MW_EXTERNALDATA_DIRECTORY_PATH'), true);
 }
-	
+
 # Semantic Stuff
 require_once "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php";
 enableSemantics();
@@ -211,24 +211,24 @@ require_once "$IP/extensions/SemanticInternalObjects/SemanticInternalObjects.php
 require_once "$IP/extensions/SemanticInternalObjects/SemanticInternalObjects.php";
 require_once "$IP/extensions/SemanticCompoundQueries/SemanticCompoundQueries.php";
 require_once "$IP/extensions/SemanticDrilldown/SemanticDrilldown.php";
-wfLoadExtension( 'PageForms' );
+wfLoadExtension('PageForms');
 
 # HierarchyBuilder Extension
-wfLoadExtension( 'HierarchyBuilder' );
+wfLoadExtension('HierarchyBuilder');
 
 # more exts
-wfLoadExtension( 'Arrays' );
-wfLoadExtension( 'HeaderTabs' );
-wfLoadExtension( 'ApprovedRevs' );
+wfLoadExtension('Arrays');
+wfLoadExtension('HeaderTabs');
+wfLoadExtension('ApprovedRevs');
 
 # NativeSvgHandler needs opt-in due to xss concerns
 if (getenv('MW_NATIVESVGHANDLER')) {
-    wfLoadExtension( 'NativeSvgHandler' );
+    wfLoadExtension('NativeSvgHandler');
 }
 
 # draw.io, needs opt-in because you need to trust diagrams.net
 if (getenv('MW_DRAWIOEDITOR')) {
-    wfLoadExtension( 'DrawioEditor' );
+    wfLoadExtension('DrawioEditor');
 }
 if (getenv('MW_DRAWIOEDITOR_IMAGE_TYPE')) {
     $wgDrawioEditorImageType = getenv('MW_DRAWIOEDITOR_IMAGE_TYPE');
@@ -241,11 +241,11 @@ if (getenv('MW_DRAWIOEDITOR_BACKEND_URL')) {
 }
 
 # for easing migrations
-wfLoadExtension( 'ReplaceText' );
+wfLoadExtension('ReplaceText');
 $wgGroupPermissions['bureaucrat']['replacetext'] = true;
 
 if (getenv("MW_USERMERGE")) {
-    wfLoadExtension( 'UserMerge' );
+    wfLoadExtension('UserMerge');
     $wgGroupPermissions['bureaucrat']['usermerge'] = getenv('MW_PERMISSION_BUREAUCRAT_USERMERGE') ?: false;;
 }
 
@@ -276,7 +276,7 @@ if (getenv('MW_AUTH_REMOTEUSER')) {
 
 # Pluggable Auth
 if (getenv('MW_AUTH_PLUGGABLE')) {
-    wfLoadExtension( 'PluggableAuth' );
+    wfLoadExtension('PluggableAuth');
     $wgPluggableAuth_EnableAutoLogin = getenv('MW_AUTH_PLUGGABLE_ENABLE_AUTO_LOGIN') ?: false;
     $wgPluggableAuth_EnableLocalLogin = getenv('MW_AUTH_PLUGGABLE_ENABLE_LOCAL_LOGIN') ?: false;
     $wgPluggableAuth_EnableLocalProperties = getenv('MW_AUTH_PLUGGABLE_ENABLE_LOCAL_PROPERTIES') ?: false;
@@ -284,13 +284,13 @@ if (getenv('MW_AUTH_PLUGGABLE')) {
 
 # OpenID Connect
 if (getenv('MW_AUTH_OIDC')) {
-    wfLoadExtension( 'OpenIDConnect' );
+    wfLoadExtension('OpenIDConnect');
     $wgOpenIDConnect_Config[getenv('MW_AUTH_OIDC_IDP_URL')] = [
         'clientID' => getenv('MW_AUTH_OIDC_CLIENT_ID'),
         'clientsecret' => getenv('MW_AUTH_OIDC_CLIENT_SECRET'),
     ];
     if (getenv('MW_AUTH_OIDC_SCOPE')) {
-	$wgOpenIDConnect_Config[getenv('MW_AUTH_OIDC_IDP_URL')]['scope'] = explode(" ", getenv('MW_AUTH_OIDC_SCOPE'));
+        $wgOpenIDConnect_Config[getenv('MW_AUTH_OIDC_IDP_URL')]['scope'] = explode(" ", getenv('MW_AUTH_OIDC_SCOPE'));
     }
     $wgOpenIDConnect_UseRealNameAsUserName = getenv('MW_AUTH_OIDC_USE_REAL_NAME_AS_USERNAME') ?: false;
     $wgOpenIDConnect_UseEmailNameAsUserName = getenv('MW_AUTH_OIDC_USER_EMAIL_NAME_AS_USERNAME') ?: false;
